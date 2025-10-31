@@ -2,27 +2,27 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"
 
 
-export async function POST(req: NextRequest){
+export async function POST(req: NextRequest) {
     try {
-        const {email,password}= await req.json()
+        const { email, password } = await req.json()
         // Check email or password provided or not, if provided then check it is correct or not. 
-        if(!email || !password){
+        if (!email || !password) {
             return NextResponse.json({
                 success: false,
                 message: "Email and Password are required"
-            },{status: 404})
+            }, { status: 404 })
         }
-        if(email !== process.env.ADMIN_EMAIL || password !==process.env.ADMIN_PASSWORD){
+        if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
             return NextResponse.json({
                 success: false,
                 message: "Email or password is INCORRECT."
-            },{status: 400})
+            }, { status: 400 })
         }
 
         // Generating the token and set it into cookies.
         const token = jwt.sign(
             {
-                email:process.env.ADMIN_EMAIL,
+                email: process.env.ADMIN_EMAIL,
                 role: "ADMIN"
             },
             process.env.JWT_SECRET!,
@@ -31,22 +31,30 @@ export async function POST(req: NextRequest){
             }
         )
 
-        const response = NextResponse.json({success: true,message: "Admin Logged In Successfully"},{status: 200})
+        const res = NextResponse.json(
+            { success: true, message: "Admin Logged In Successfully" },
+            { status: 200 }
+        );
 
-        response.cookies.set('token',token,{
+        // Set CORS headers
+        res.headers.set("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "http://localhost:3000");
+        res.headers.set("Access-Control-Allow-Credentials", "true");
+
+        // Set cookie
+        res.cookies.set("token", token, {
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            path: '/admin'
-        })
+            secure: false,
+            sameSite: "lax",
+            path: "/admin",
+        });
 
-        return response
+        return res;
 
-    } catch (error:any) {
+    } catch (error: any) {
         return NextResponse.json({
             success: false,
             message: error.message
-        },{status:500})
-        
+        }, { status: 500 })
+
     }
 }

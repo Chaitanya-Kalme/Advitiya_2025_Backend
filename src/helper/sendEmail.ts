@@ -119,7 +119,7 @@ export const sendEmail = async ({ email, emailType, userId }: {
                         <p class="small-text">Visit this link to verify OTP:<a href="${process.env.WEBSITE_DOMAIN?.toString()}/verifyotp/${user.id}">Link</a> </p>
                         <p class="small-text">If you didn’t request this, please ignore this email.</p>
                         <hr />
-                        <p class="footer">&copy; 2025 E-Cell IIT Ropar. All rights reserved.</p>
+                        <p class="footer">&copy; 2025 Advitiya IIT Ropar. All rights reserved.</p>
                     </div>
                     </body>
                     </html>
@@ -219,7 +219,7 @@ export const sendEmail = async ({ email, emailType, userId }: {
                         <p class="small-text">This code will expire in 15 minutes.</p>
                         <p class="small-text">If you didn’t request this, please ignore this email.</p>
                         <hr />
-                        <p class="footer">&copy; 2025 E-Cell IIT Ropar. All rights reserved.</p>
+                        <p class="footer">&copy; 2025 Advitiya IIT Ropar. All rights reserved.</p>
                     </div>
                     </body>
                     </html>

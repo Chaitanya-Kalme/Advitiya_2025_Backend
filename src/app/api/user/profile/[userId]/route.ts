@@ -1,10 +1,21 @@
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
 
 export async function GET(req: NextRequest, {params}:{params: {userId: string}}){
     try {
+
+        const session = await getServerSession()
+
+        if(!session){
+            return NextResponse.json({
+                success: false,
+                message: "User is not logged in"
+            },{status: 400})
+        }
+
         const urlParams = await params
         const userId = urlParams.userId
 
